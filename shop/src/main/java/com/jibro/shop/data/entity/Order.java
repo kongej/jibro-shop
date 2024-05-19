@@ -30,7 +30,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Builder
-@Table(name = "order")
+@Table(name = "seller_order")
 public class Order {
 	/* 주문코드(pk) */
 	@Id
@@ -46,20 +46,29 @@ public class Order {
 	private Integer totalCost;
 	
 	/* 구매자명 */
-	@Column(name = "orderer_name", nullable = false)
+	@Column(name = "orderer_name", nullable = false, length = 20)
 	private String ordererName;
 	
+	/* 주문 비밀번호 */
+	@Column(name = "order_password", nullable = false, length = 20)
+	private String orderPassword;
+	
 	/* 전화번호 */
-	@Column(name = "phone_number", nullable = false)
+	@Column(name = "phone_number", nullable = false, length = 15)
 	private String phoneNumber;
 	
 	/* 주소 */
-	@Column(name = "address", nullable = false)
+	@Column(name = "address", nullable = false, length = 255)
 	private String address;
 	
 	/* 현 상태 */
 	@Column(name = "status", nullable = false)
-	private String status;
+	@Builder.Default
+	private Integer status = 0;
+	
+	/* 송장번호 */
+	@Column(name = "invc", unique = true)
+	private Integer invc;
 	
 	/* 주문 날짜 */
 	@CreatedDate
