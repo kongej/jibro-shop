@@ -7,12 +7,17 @@
 <!-- action 명 별도로 지정하지 않아도 요청 가능 -->
 <!-- 대신 그럴 경우 요청 경로랑 url이 일치해야 함 -->
 <form method="POST">
-	<p>제목 : <input type="text" name="title" /></p>
-	<p>가격 : <input type="text" name="price" /></p>
+	<p>수량 : <input type="number" name="selectedCount" required /> </p>
+	<p>총 가격 : <input type="text" name="totalCost" required /></p>
+	<p>구매자 성명 : <input type="text" name="ordererName" required /></p>
+	<p>주문 조회 비밀번호 : <input type="password" name="orderPassword" required /></p>
+	<p>전화번호 : <input type="text" name="phoneNumber" placeholder="000-000-0000" required /></p>
+	<p>주소 : <input type="text" name="address" required /></p>
 <div>
+	<input type="hidden" name="productId" value="0001" />
 	<input type="submit" value="저장" />
 	&nbsp;
-	<input type="button" onclick="location.href='/book/list'" value="목록으로 가기">
+	<input type="button" onclick="location.href=document.referrer;" value="취소">
 </div>
 </form>
 </body>
