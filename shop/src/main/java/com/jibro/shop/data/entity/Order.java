@@ -41,7 +41,7 @@ public class Order {
 	
 	/* 선택 수량 */
 	@Column(name = "selected_count", nullable = false)
-	private Integer SelectedCount;
+	private Integer selectedCount;
 	
 	/* 총 가격 */
 	@Column(name = "total_cost", nullable = false)

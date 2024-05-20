@@ -31,6 +31,9 @@
 	jQuery에서 끌어다 쓸 수 있도록 bookId를 변수화(th:attr)
 	<input type="button" id="book_log_save" value="책 기록 저장" th:attr="data-bookId=${bookReadResponseDTO.bookId}" />
 	</p> -->
+	<form action="POST">
+		<input type="hidden" name="productId" value="0001" />
+	</form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- <script type="text/javascript">
 	$(document).ready(function(){

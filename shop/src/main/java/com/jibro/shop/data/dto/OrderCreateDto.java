@@ -22,7 +22,7 @@ import lombok.ToString;
 public class OrderCreateDto {
 	
 	/* 선택 수량 */
-	private int SelectedCount;
+	private int selectedCount;
 	
 	/* 총 가격 */
 	private int totalCost;

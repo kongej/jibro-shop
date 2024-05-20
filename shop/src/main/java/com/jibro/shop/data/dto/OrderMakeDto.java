@@ -23,6 +23,6 @@ public class OrderMakeDto {
     private String productId;
     
     /* 선택 수량 */
-	private int SelectedCount;
+	private int selectedCount;
 	
 }
