@@ -1,11 +1,16 @@
 package com.jibro.shop.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jibro.shop.data.dto.OrderCheckDto;
+import com.jibro.shop.data.dto.OrderCreateDto;
 import com.jibro.shop.service.OrderService;
 
 /**
@@ -17,25 +22,33 @@ import com.jibro.shop.service.OrderService;
 @Controller
 public class OrderController {
 	
+	// 로그 설정
+	private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+	
 	// 의존성 주입(OrderService)
 	@Autowired
 	private OrderService orderService;
 
+	// 주문 신규 등록
 	@PostMapping("/order/create")
-	public String createOrder() {
+	public String createOrder(@RequestBody OrderCreateDto orderCreateDto) {
 		
 		return "redirect:/order/check";
 	}
 	
+	// 주문 확인 입력 페이지로 이동
 	@GetMapping("/order/check")
 	public ModelAndView checkOrder() {
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView("order/orderCheck");
 		return mav;
 	}
 	
+	// 주문 상세 페이지로 이동
 	@PostMapping("/order/detail")
-	public ModelAndView getOrder() {
+	public ModelAndView getOrder(@RequestBody OrderCheckDto orderCheckDto) {
 		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("order/orderDetail");
 		return mav;
 	}
 }
