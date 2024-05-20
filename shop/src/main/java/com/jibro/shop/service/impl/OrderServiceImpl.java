@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jibro.shop.data.dto.OrderCheckDto;
+import com.jibro.shop.data.dto.OrderCreateDto;
 import com.jibro.shop.data.dto.OrderDto;
 import com.jibro.shop.data.dto.OrderResponseDto;
 import com.jibro.shop.data.repository.OrderRepository;
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public int createOrder(OrderDto orderDto) {
+	public int createOrder(OrderCreateDto orderCreateDto) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -44,5 +45,6 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
