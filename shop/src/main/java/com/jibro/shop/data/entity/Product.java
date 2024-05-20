@@ -29,7 +29,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "orderList")
 @EqualsAndHashCode
 @Builder
 @Table(name = "product")
@@ -60,5 +60,5 @@ public class Product {
 	/* order 엔티티와 OneToMany 매핑 */
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_id")
-	private List<Order> orders = new ArrayList<>();
+	private List<Order> orderList = new ArrayList<>();
 }

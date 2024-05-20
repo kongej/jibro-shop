@@ -1,6 +1,10 @@
-package com.jibro.shop.data.dto;
+package com.jibro.shop.data.dto.order;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,19 +15,18 @@ import lombok.ToString;
 /**
  * @author ljy
  * @since 2024.05.20
- * Order dto 코드
+ * Order Create dto 코드
+ * order 신규 생성 시 사용
  * **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class OrderDto {
-	/* 주문코드(pk) */
-	private String orderId;
+public class OrderCreateDto {
 	
 	/* 선택 수량 */
-	private int SelectedCount;
+	private int selectedCount;
 	
 	/* 총 가격 */
 	private int totalCost;
@@ -34,7 +37,7 @@ public class OrderDto {
 	/* 주문 비밀번호 */
 	private String orderPassword;
 	
-	/* 전화번호 */
+	/* 연락처 */
 	private String phoneNumber;
 	
 	/* 주소 */
@@ -46,7 +49,6 @@ public class OrderDto {
 	/* 송장번호 */
 	private int invc;
 	
-	/* 주문 날짜 */
-	private LocalDate orderDate;
-	
+	/* 관련된 제품 코드 */
+    private String productId;
 }
