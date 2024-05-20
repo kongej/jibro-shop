@@ -31,7 +31,7 @@ public class OrderController {
 
 	// 주문 신규 등록
 	@PostMapping("/order/create")
-	public String createOrder(@RequestBody OrderCreateDto orderCreateDto) {
+	public String createOrder(OrderCreateDto orderCreateDto) {
 		
 		return "redirect:/order/check";
 	}
@@ -45,7 +45,7 @@ public class OrderController {
 	
 	// 주문 상세 페이지로 이동
 	@PostMapping("/order/check")
-	public ModelAndView getOrder(@RequestBody OrderCheckDto orderCheckDto) {
+	public ModelAndView getOrder(OrderCheckDto orderCheckDto) {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.setViewName("order/detail");

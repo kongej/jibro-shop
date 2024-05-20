@@ -39,9 +39,8 @@ public class ProductController {
 	}
 	
 	// order 신규 등록 화면으로 이동
-	@PostMapping("/order/make/{productId}")
-	public ModelAndView makeOrder(
-			@RequestBody OrderMakeDto orderMakeDto) {
+	@PostMapping("/order/make")
+	public ModelAndView makeOrder(OrderMakeDto orderMakeDto) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("order/create");
 		return mav;
