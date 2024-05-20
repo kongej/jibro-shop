@@ -12,7 +12,7 @@ import com.jibro.shop.data.dto.order.OrderResponseDto;
 public interface OrderService {
 	
 	/* 주문 신규 등록 */
-	Integer createOrder(OrderCreateDto orderCreateDto);
+	String createOrder(OrderCreateDto orderCreateDto);
 	
 	/* 주문 조회 */
 	OrderResponseDto getOrder(OrderCheckDto orderCheckDto);

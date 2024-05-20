@@ -1,5 +1,9 @@
 package com.jibro.shop.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +12,11 @@ import org.springframework.stereotype.Service;
 import com.jibro.shop.data.dto.order.OrderCheckDto;
 import com.jibro.shop.data.dto.order.OrderCreateDto;
 import com.jibro.shop.data.dto.order.OrderResponseDto;
+import com.jibro.shop.data.entity.Order;
 import com.jibro.shop.data.repository.OrderRepository;
 import com.jibro.shop.data.repository.ProductRepository;
 import com.jibro.shop.service.OrderService;
+import com.jibro.shop.utils.OrderIdGenerator;
 
 /**
  * @author ljy
@@ -33,16 +39,55 @@ public class OrderServiceImpl implements OrderService {
 		this.orderRepository = orderRepository;
 	}
 	
+	// 주문 신규 생성
 	@Override
-	public Integer createOrder(OrderCreateDto orderCreateDto) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String createOrder(OrderCreateDto orderCreateDto) {
+		LOGGER.info("[createOrder] input orderCreateDto : {}", orderCreateDto);
+		// 결과 int로 return (0: 실패, 1: 성공)
+		int result = 1;
+		
+		// 이전까지 오늘 내로 주문 들어온 수 카운트
+		LocalDateTime startOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+       
+        System.out.println("startOfDay : " + startOfDay);
+        System.out.println("endOfDay : " + endOfDay);
+        
+		int countBeforeOrders = this.orderRepository.countByCreatedAtBetween(startOfDay, endOfDay).intValue();
+		LOGGER.info("[createOrder] find today's order count : {}", countBeforeOrders);
+		
+		// 주문번호 기준에 맞춰 신규 생성
+		String newOrderId = OrderIdGenerator.generateOrderCode(countBeforeOrders + 1);
+		LOGGER.info("[createOrder] make new order ID : {}", newOrderId);
+		
+		// product 객체 불러옴
+		
+		// order 엔티티 객체 생성
+		Order order = Order.builder()
+				.orderId(newOrderId)
+				.selectedCount(orderCreateDto.getSelectedCount())
+				.totalCost(orderCreateDto.getTotalCost())
+				.ordererName(orderCreateDto.getOrdererName())
+				.orderPassword(orderCreateDto.getOrderPassword())
+				.phoneNumber(orderCreateDto.getPhoneNumber())
+				.address(orderCreateDto.getAddress())
+				.productId(orderCreateDto.getProductId())
+				.build();
+		
+		Order savedOrder = orderRepository.save(order);
+		LOGGER.info("[createOrder] savedOrder : {}", savedOrder);
+		
+		return newOrderId;
 	}
 
+	// 주문 상세 정보 조회
 	@Override
 	public OrderResponseDto getOrder(OrderCheckDto orderCheckDto) {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[getOrder] input orderCheckDto : {}", orderCheckDto);
+		
+		OrderResponseDto orderResponseDto = new OrderResponseDto();
+		
+		return orderResponseDto;
 	}
 
 

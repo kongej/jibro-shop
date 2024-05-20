@@ -1,6 +1,6 @@
 package com.jibro.shop.data.dto.order;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.jibro.shop.data.dto.product.ProductDto;
 
@@ -50,7 +50,10 @@ public class OrderResponseDto {
 	private int invc;
 	
 	/* 주문 날짜 */
-	private LocalDate orderDate;
+	private LocalDateTime createdAt;
+	
+	/* 주문 갱신 날짜 */
+	private LocalDateTime updatedAt;
 	
 	/* 관련된 제품 정보 */
     private ProductDto product;

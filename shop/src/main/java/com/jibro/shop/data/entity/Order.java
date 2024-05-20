@@ -1,15 +1,12 @@
 package com.jibro.shop.data.entity;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.CreatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +30,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Builder
 @Table(name = "seller_order")
-public class Order {
+public class Order extends BaseEntity {
 	/* 주문코드(pk) */
 	@Id
 	@Column(name = "order_id", length = 50)
@@ -72,16 +69,17 @@ public class Order {
 	@Column(name = "invc", unique = true)
 	private Integer invc;
 	
-	/* 주문 날짜 */
-	@CreatedDate
-	@Column(name = "order_date", 
-			nullable = false, 
-			updatable = false)
-	private LocalDate orderDate;
-	
 	/* product 외래키 지정(ManyToOne) */
-    @ManyToOne
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
+    
+    @Column(name = "product_id")
+    private String productId;
+    
+    /* productId만 넣어도 엔티티 객체 생성 가능하도록 조치 */
+    public Order(String productId) {
+    	this.productId = productId;
+    }
 	
 }

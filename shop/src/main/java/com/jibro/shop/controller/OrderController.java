@@ -37,9 +37,13 @@ public class OrderController {
 
 	// 주문 신규 등록
 	@PostMapping("/order/create")
-	public String createOrder(OrderCreateDto orderCreateDto) {
-		Integer result = this.orderService.createOrder(orderCreateDto);
-		return "redirect:/order/check";
+	public ModelAndView createOrder(OrderCreateDto orderCreateDto) {
+		ModelAndView mav = new ModelAndView();
+		String result = this.orderService.createOrder(orderCreateDto);
+		mav.addObject("message", "주문이 완료되었습니다. (주문번호: " + result + ")");
+		mav.addObject("location", "/order/check");
+		mav.setViewName("common/check");
+		return mav;
 	}
 	
 	// 주문 확인 입력 페이지로 이동
@@ -76,7 +80,7 @@ public class OrderController {
 		mav.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
 		mav.addObject("message", message);
 		mav.addObject("location", location);
-		mav.setViewName("common/error/check");
+		mav.setViewName("common/check");
 		return mav;
 	}
 	

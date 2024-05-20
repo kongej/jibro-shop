@@ -1,6 +1,10 @@
 package com.jibro.shop.data.dto.order;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,9 +48,6 @@ public class OrderCreateDto {
 	
 	/* 송장번호 */
 	private int invc;
-	
-	/* 주문 날짜 */
-	private LocalDate orderDate;
 	
 	/* 관련된 제품 코드 */
     private String productId;

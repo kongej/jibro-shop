@@ -1,6 +1,6 @@
 package com.jibro.shop.data.dto.order;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,7 +47,10 @@ public class OrderDto {
 	private int invc;
 	
 	/* 주문 날짜 */
-	private LocalDate orderDate;
+	private LocalDateTime createdAt;
+	
+	/* 주문 갱신 날짜 */
+	private LocalDateTime updatedAt;
 	
 	/* 관련된 제품 코드 */
     private String productId;
