@@ -49,4 +49,6 @@ public class OrderDto {
 	/* 주문 날짜 */
 	private LocalDate orderDate;
 	
+	/* 관련된 제품 코드 */
+    private String productId;
 }

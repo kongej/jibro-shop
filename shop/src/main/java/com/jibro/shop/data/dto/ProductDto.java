@@ -28,7 +28,7 @@ public class ProductDto {
 	private String product;
 	
 	/* 수량 */
-	private Integer productCount = 0;
+	private Integer productCount;
 	
 	/* 판매가 */
 	private Integer cost;
@@ -38,4 +38,5 @@ public class ProductDto {
 	
 	/* order 엔티티와 OneToMany 매핑 */
 	private List<Order> orders;
+	
 }
