@@ -44,7 +44,7 @@ public class OrderController {
 	}
 	
 	// 주문 상세 페이지로 이동
-	@PostMapping("/order/detail")
+	@PostMapping("/order/check")
 	public ModelAndView getOrder(@RequestBody OrderCheckDto orderCheckDto) {
 		ModelAndView mav = new ModelAndView();
 		
