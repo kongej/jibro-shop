@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jibro.shop.data.dto.OrderMakeDto;
+import com.jibro.shop.data.dto.ProductOrderDto;
+import com.jibro.shop.data.dto.ProductResponseDto;
 import com.jibro.shop.service.ProductService;
 
 /**
@@ -34,6 +36,8 @@ public class ProductController {
 	public ModelAndView getProduct(
 			@PathVariable String productId) {
 		ModelAndView mav = new ModelAndView();
+		ProductResponseDto productResponseDto = this.productService.getProduct(productId);
+		mav.addObject("productResponseDto", productResponseDto);
 		mav.setViewName("product/detail");
 		return mav;
 	}
@@ -42,6 +46,8 @@ public class ProductController {
 	@PostMapping("/order/make")
 	public ModelAndView makeOrder(OrderMakeDto orderMakeDto) {
 		ModelAndView mav = new ModelAndView();
+		ProductOrderDto productOrderDto = this.productService.makeOrder(orderMakeDto);
+		mav.addObject("productOrderDto", productOrderDto);
 		mav.setViewName("order/create");
 		return mav;
 	}

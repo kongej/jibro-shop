@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jibro.shop.data.dto.OrderMakeDto;
+import com.jibro.shop.data.dto.ProductOrderDto;
 import com.jibro.shop.data.dto.ProductResponseDto;
 import com.jibro.shop.data.repository.OrderRepository;
 import com.jibro.shop.data.repository.ProductRepository;
@@ -32,6 +34,21 @@ public class ProductServiceImpl implements ProductService {
 	public ProductResponseDto getProduct(String productId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ProductOrderDto makeOrder(OrderMakeDto orderMakeDto) {
+		
+		ProductResponseDto productResponseDto = new ProductResponseDto();
+		ProductOrderDto productOrderDto = new ProductOrderDto();
+		
+		productOrderDto.setProductId(productResponseDto.getProductId());
+		productOrderDto.setCost(productResponseDto.getCost());
+		productOrderDto.setProduct(productResponseDto.getProduct());
+		productOrderDto.setImg(productResponseDto.getImg());
+		productOrderDto.setSelectedCount(orderMakeDto.getSelectedCount());
+		
+		return productOrderDto;
 	}
 
 }
