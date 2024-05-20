@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>신규 주문 등록</title>
+</head>
+<body>
+<h1>신규 주문 등록</h1>
+<!-- action 명 별도로 지정하지 않아도 요청 가능 -->
+<!-- 대신 그럴 경우 요청 경로랑 url이 일치해야 함 -->
+<form method="POST">
+	<p>제목 : <input type="text" name="title" /></p>
+	<p>가격 : <input type="text" name="price" /></p>
+<div>
+	<input type="submit" value="저장" />
+	&nbsp;
+	<input type="button" onclick="location.href='/book/list'" value="목록으로 가기">
+</div>
+</form>
+</body>
+</html>

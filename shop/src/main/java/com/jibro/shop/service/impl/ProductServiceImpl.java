@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jibro.shop.data.dto.ProductDto;
+import com.jibro.shop.data.dto.ProductResponseDto;
 import com.jibro.shop.data.repository.OrderRepository;
 import com.jibro.shop.data.repository.ProductRepository;
 import com.jibro.shop.service.ProductService;
@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public ProductDto getProduct(String productId) {
+	public ProductResponseDto getProduct(String productId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

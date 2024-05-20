@@ -1,6 +1,6 @@
 package com.jibro.shop.service;
 
-import com.jibro.shop.data.dto.ProductDto;
+import com.jibro.shop.data.dto.ProductResponseDto;
 
 /**
  * @author ljy
@@ -10,6 +10,6 @@ import com.jibro.shop.data.dto.ProductDto;
 public interface ProductService {
 	
 	/* 제품 상세 정보 제공 */
-	ProductDto getProduct(String productId);
+	ProductResponseDto getProduct(String productId);
 
 }

@@ -39,7 +39,7 @@ public class OrderController {
 	// 주문 확인 입력 페이지로 이동
 	@GetMapping("/order/check")
 	public ModelAndView checkOrder() {
-		ModelAndView mav = new ModelAndView("order/orderCheck");
+		ModelAndView mav = new ModelAndView("order/check");
 		return mav;
 	}
 	
@@ -48,7 +48,7 @@ public class OrderController {
 	public ModelAndView getOrder(@RequestBody OrderCheckDto orderCheckDto) {
 		ModelAndView mav = new ModelAndView();
 		
-		mav.setViewName("order/orderDetail");
+		mav.setViewName("order/detail");
 		return mav;
 	}
 }

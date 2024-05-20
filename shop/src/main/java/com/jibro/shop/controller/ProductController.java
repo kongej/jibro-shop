@@ -34,7 +34,7 @@ public class ProductController {
 	public ModelAndView getProduct(
 			@PathVariable String productId) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("product/productDetail");
+		mav.setViewName("product/detail");
 		return mav;
 	}
 	
@@ -43,7 +43,7 @@ public class ProductController {
 	public ModelAndView makeOrder(
 			@RequestBody OrderMakeDto orderMakeDto) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("order/orderMake");
+		mav.setViewName("order/create");
 		return mav;
 	}
 }
