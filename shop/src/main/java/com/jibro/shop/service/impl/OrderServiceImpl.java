@@ -3,6 +3,7 @@ package com.jibro.shop.service.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
 		Order savedOrder = orderRepository.save(order);
 		LOGGER.info("[createOrder] savedOrder : {}", savedOrder);
 		
-		return newOrderId;
+		return savedOrder.getOrderId();
 	}
 
 	// 주문 상세 정보 조회
@@ -85,7 +86,28 @@ public class OrderServiceImpl implements OrderService {
 	public OrderResponseDto getOrder(OrderCheckDto orderCheckDto) {
 		LOGGER.info("[getOrder] input orderCheckDto : {}", orderCheckDto);
 		
+		Optional<Order> order = this.orderRepository.findByOrderIdAndOrdererNameAndOrderPassword(orderCheckDto.getOrderId(), orderCheckDto.getOrdererName(), orderCheckDto.getOrderPassword());
+		LOGGER.info("[getOrder] find order : {}", order);
+		
 		OrderResponseDto orderResponseDto = new OrderResponseDto();
+		
+		if (order.isPresent()) {
+			orderResponseDto.setOrderId(order.get().getOrderId());
+			orderResponseDto.setSelectedCount(order.get().getSelectedCount());
+			orderResponseDto.setTotalCost(order.get().getTotalCost());
+			orderResponseDto.setOrdererName(order.get().getOrdererName());
+			orderResponseDto.setOrderPassword(order.get().getOrderPassword());
+			orderResponseDto.setPhoneNumber(order.get().getPhoneNumber());
+			orderResponseDto.setAddress(order.get().getAddress());
+			orderResponseDto.setStatus(order.get().getStatus());
+			orderResponseDto.setInvc(order.get().getInvc() != null ? order.get().getInvc() : 0);
+			orderResponseDto.setCreatedAt(order.get().getCreatedAt());
+			orderResponseDto.setUpdatedAt(order.get().getUpdatedAt());
+			orderResponseDto.setProductId(order.get().getProductId());
+		} else {
+			System.out.println("false");
+		}
+		/* LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto); */
 		
 		return orderResponseDto;
 	}

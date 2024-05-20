@@ -26,7 +26,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "productId")
 @EqualsAndHashCode
 @Builder
 @Table(name = "seller_order")
@@ -70,7 +70,7 @@ public class Order extends BaseEntity {
 	private Integer invc;
 	
 	/* product 외래키 지정(ManyToOne) */
-    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
     

@@ -37,7 +37,7 @@ public class OrderResponseDto {
 	/* 주문 비밀번호 */
 	private String orderPassword;
 	
-	/* 전화번호 */
+	/* 연락처 */
 	private String phoneNumber;
 	
 	/* 주소 */
@@ -56,5 +56,5 @@ public class OrderResponseDto {
 	private LocalDateTime updatedAt;
 	
 	/* 관련된 제품 정보 */
-    private ProductDto product;
+    private String productId;
 }

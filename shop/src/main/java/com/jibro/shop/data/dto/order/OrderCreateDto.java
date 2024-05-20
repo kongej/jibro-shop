@@ -37,7 +37,7 @@ public class OrderCreateDto {
 	/* 주문 비밀번호 */
 	private String orderPassword;
 	
-	/* 전화번호 */
+	/* 연락처 */
 	private String phoneNumber;
 	
 	/* 주소 */
