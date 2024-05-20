@@ -1,0 +1,18 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>주문 확인</title>
+</head>
+<body>
+<h1>주문 확인</h1>
+<!-- action 명 별도로 지정하지 않아도 요청 가능 -->
+<!-- 대신 그럴 경우 요청 경로랑 url이 일치해야 함 -->
+<form method="POST">
+	<p>주문번호 : <input type="text" name="orderId" required /></p>
+	<p>구매자 성명 : <input type="text" name="ordererName" required /></p>
+	<p>주문 조회 비밀번호 : <input type="password" name="orderPassword" required /></p>
+<div>
+	<input type="submit" value="조회" />
+</div>
+</form>
+</body>
+</html>

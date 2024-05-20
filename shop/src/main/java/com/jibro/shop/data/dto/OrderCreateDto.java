@@ -11,16 +11,15 @@ import lombok.ToString;
 /**
  * @author ljy
  * @since 2024.05.20
- * Order response dto 코드
+ * Order Create dto 코드
+ * order 신규 생성 시 사용
  * **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class OrderResponseDto {
-	/* 주문코드(pk) */
-	private String orderId;
+public class OrderCreateDto {
 	
 	/* 선택 수량 */
 	private int selectedCount;
@@ -49,6 +48,6 @@ public class OrderResponseDto {
 	/* 주문 날짜 */
 	private LocalDate orderDate;
 	
-	/* 관련된 제품 정보 */
-    private ProductDto product;
+	/* 관련된 제품 코드 */
+    private String productId;
 }
