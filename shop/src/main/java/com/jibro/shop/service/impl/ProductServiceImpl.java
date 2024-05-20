@@ -64,6 +64,7 @@ public class ProductServiceImpl implements ProductService {
 		Optional<Product> product = productRepository.findByProductId(orderMakeDto.getProductId());
 		
 		ProductOrderDto productOrderDto = new ProductOrderDto();
+		productOrderDto.setSelectedCount(orderMakeDto.getSelectedCount());
 		
 		// 해당 product 존재 시, 해당 값 ProductResponseDto에 넣어서 보내주기
 		if (product.isPresent()) {
@@ -73,8 +74,8 @@ public class ProductServiceImpl implements ProductService {
 			productOrderDto.setProduct(product.get().getProduct());
 			productOrderDto.setImg(product.get().getImg());
 			productOrderDto.setCost(product.get().getCost());
-			productOrderDto.setSelectedCount(orderMakeDto.getSelectedCount());
 		}
+		
 		
 		return productOrderDto;
 	}

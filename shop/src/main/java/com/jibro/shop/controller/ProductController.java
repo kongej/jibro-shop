@@ -46,6 +46,7 @@ public class ProductController {
 	public ModelAndView makeOrder(OrderMakeDto orderMakeDto) {
 		ModelAndView mav = new ModelAndView();
 		ProductOrderDto productOrderDto = this.productService.makeOrder(orderMakeDto);
+		LOGGER.info("ProductOrderDto: {}", productOrderDto);
 		mav.addObject("productOrderDto", productOrderDto);
 		mav.setViewName("order/create");
 		return mav;

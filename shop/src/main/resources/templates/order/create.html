@@ -7,7 +7,7 @@
 <!-- action 명 별도로 지정하지 않아도 요청 가능 -->
 <!-- 대신 그럴 경우 요청 경로랑 url이 일치해야 함 -->
 <form method="POST" th:action="@{/order/create}" th:object="${orderCreateDto}">
-	<p>수량 : <input type="number" name="selectedCount" required /> </p>
+	<p>수량 : <input type="number" name="selectedCount" th:value="${productOrderDto.selectedCount}" min="1" required /> </p>
 	<p>총 가격 : <input type="text" name="totalCost" required /></p>
 	<p>구매자 성명 : <input type="text" name="ordererName" required /></p>
 	<p>주문 조회 비밀번호 : <input type="password" name="orderPassword" required /></p>
