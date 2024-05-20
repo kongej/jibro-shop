@@ -1,9 +1,5 @@
 package com.jibro.shop.data.dto;
 
-import java.util.List;
-
-import com.jibro.shop.data.entity.Order;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +18,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class ProductResponseDto {
+	
 	/* 제품코드(pk) */
 	private String productId;
 	

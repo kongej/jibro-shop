@@ -1,6 +1,8 @@
-package com.jibro.shop.data.dto;
+package com.jibro.shop.data.dto.order;
 
 import java.time.LocalDate;
+
+import com.jibro.shop.data.dto.ProductDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +14,7 @@ import lombok.ToString;
  * @author ljy
  * @since 2024.05.20
  * Order response dto 코드
+ * 주문 단일 조회 용도
  * **/
 @Data
 @NoArgsConstructor
