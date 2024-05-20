@@ -7,12 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jibro.shop.data.dto.OrderMakeDto;
-import com.jibro.shop.data.dto.ProductOrderDto;
-import com.jibro.shop.data.dto.ProductResponseDto;
+import com.jibro.shop.data.dto.order.OrderMakeDto;
+import com.jibro.shop.data.dto.product.ProductOrderDto;
+import com.jibro.shop.data.dto.product.ProductResponseDto;
 import com.jibro.shop.service.ProductService;
 
 /**

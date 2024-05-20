@@ -1,4 +1,4 @@
-package com.jibro.shop.data.dto;
+package com.jibro.shop.data.dto.order;
 
 import java.time.LocalDate;
 

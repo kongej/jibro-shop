@@ -1,8 +1,4 @@
-package com.jibro.shop.data.dto;
-
-import java.util.List;
-
-import com.jibro.shop.data.entity.Order;
+package com.jibro.shop.data.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +9,16 @@ import lombok.ToString;
 /**
  * @author ljy
  * @since 2024.05.20
- * Product dto 코드
+ * Product Response dto 코드
+ * product 조회 시 코드
  * **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class ProductDto {
+public class ProductResponseDto {
+	
 	/* 제품코드(pk) */
 	private String productId;
 	
@@ -36,7 +34,5 @@ public class ProductDto {
 	/* 이미지 */
 	private String img;
 	
-	/* order 엔티티와 OneToMany 매핑 */
-	private List<Order> orders;
 	
 }

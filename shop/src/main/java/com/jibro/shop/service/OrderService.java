@@ -1,7 +1,7 @@
 package com.jibro.shop.service;
 
-import com.jibro.shop.data.dto.OrderCheckDto;
-import com.jibro.shop.data.dto.OrderCreateDto;
+import com.jibro.shop.data.dto.order.OrderCheckDto;
+import com.jibro.shop.data.dto.order.OrderCreateDto;
 import com.jibro.shop.data.dto.order.OrderResponseDto;
 
 /**

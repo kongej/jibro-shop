@@ -2,7 +2,7 @@ package com.jibro.shop.data.dto.order;
 
 import java.time.LocalDate;
 
-import com.jibro.shop.data.dto.ProductDto;
+import com.jibro.shop.data.dto.product.ProductDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
