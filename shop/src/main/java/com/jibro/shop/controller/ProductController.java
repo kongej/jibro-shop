@@ -7,12 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jibro.shop.data.dto.OrderMakeDto;
-import com.jibro.shop.data.dto.ProductOrderDto;
-import com.jibro.shop.data.dto.ProductResponseDto;
+import com.jibro.shop.data.dto.order.OrderMakeDto;
+import com.jibro.shop.data.dto.product.ProductOrderDto;
+import com.jibro.shop.data.dto.product.ProductResponseDto;
 import com.jibro.shop.service.ProductService;
 
 /**
@@ -47,6 +46,7 @@ public class ProductController {
 	public ModelAndView makeOrder(OrderMakeDto orderMakeDto) {
 		ModelAndView mav = new ModelAndView();
 		ProductOrderDto productOrderDto = this.productService.makeOrder(orderMakeDto);
+		LOGGER.info("ProductOrderDto: {}", productOrderDto);
 		mav.addObject("productOrderDto", productOrderDto);
 		mav.setViewName("order/create");
 		return mav;

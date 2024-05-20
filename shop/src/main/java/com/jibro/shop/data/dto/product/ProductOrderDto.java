@@ -1,8 +1,4 @@
-package com.jibro.shop.data.dto;
-
-import java.util.List;
-
-import com.jibro.shop.data.entity.Order;
+package com.jibro.shop.data.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,29 +9,29 @@ import lombok.ToString;
 /**
  * @author ljy
  * @since 2024.05.20
- * Product Response dto 코드
- * product 조회 시 코드
+ * Product Order dto 코드
+ * 신규 주문 신청 시 제품 관련 정보와 숫자 돌려 받는 코드
  * **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class ProductResponseDto {
+public class ProductOrderDto {
 	/* 제품코드(pk) */
 	private String productId;
 	
 	/* 제품명 */
 	private String product;
 	
-	/* 수량 */
-	private Integer productCount;
+	/* 선택 수량 */
+	private int selectedCount;
 	
 	/* 판매가 */
 	private Integer cost;
 	
 	/* 이미지 */
 	private String img;
-	
+
 	
 }

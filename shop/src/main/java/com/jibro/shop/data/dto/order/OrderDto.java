@@ -1,6 +1,6 @@
-package com.jibro.shop.data.dto;
+package com.jibro.shop.data.dto.order;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +11,14 @@ import lombok.ToString;
 /**
  * @author ljy
  * @since 2024.05.20
- * Order response dto 코드
+ * Order dto 코드
  * **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class OrderResponseDto {
+public class OrderDto {
 	/* 주문코드(pk) */
 	private String orderId;
 	
@@ -34,7 +34,7 @@ public class OrderResponseDto {
 	/* 주문 비밀번호 */
 	private String orderPassword;
 	
-	/* 전화번호 */
+	/* 연락처 */
 	private String phoneNumber;
 	
 	/* 주소 */
@@ -47,8 +47,11 @@ public class OrderResponseDto {
 	private int invc;
 	
 	/* 주문 날짜 */
-	private LocalDate orderDate;
+	private LocalDateTime createdAt;
 	
-	/* 관련된 제품 정보 */
-    private ProductDto product;
+	/* 주문 갱신 날짜 */
+	private LocalDateTime updatedAt;
+	
+	/* 관련된 제품 코드 */
+    private String productId;
 }
