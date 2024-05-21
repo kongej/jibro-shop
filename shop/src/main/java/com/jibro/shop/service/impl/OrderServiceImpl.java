@@ -75,8 +75,13 @@ public class OrderServiceImpl implements OrderService {
 				.productId(orderCreateDto.getProductId())
 				.build();
 		
+		// 주문 정보 db에 저장
 		Order savedOrder = orderRepository.save(order);
 		LOGGER.info("[createOrder] savedOrder : {}", savedOrder);
+		
+		// api 요청을 풀필먼트 컨트롤러 측에 전달
+		
+		
 		
 		return savedOrder.getOrderId();
 	}
@@ -86,11 +91,16 @@ public class OrderServiceImpl implements OrderService {
 	public OrderResponseDto getOrder(OrderCheckDto orderCheckDto) {
 		LOGGER.info("[getOrder] input orderCheckDto : {}", orderCheckDto);
 		
+		// 쿼리문으로 조건에 맞는 order 조회(주문번호 AND 구매자 성명 AND 비밀번호)
 		Optional<Order> order = this.orderRepository.findByOrderIdAndOrdererNameAndOrderPassword(orderCheckDto.getOrderId(), orderCheckDto.getOrdererName(), orderCheckDto.getOrderPassword());
 		LOGGER.info("[getOrder] find order : {}", order);
 		
+		
+		// 프레젠테이션 영역으로 넘겨줄 dto 객체 생성
 		OrderResponseDto orderResponseDto = new OrderResponseDto();
 		
+		// order 정보 값 존재 시, 해당 dto에 값 담아줌
+		/*TODO 만약 시간 있을 시, order 정보 없을 시 추가 대응 가능하도록 조치할 것 */
 		if (order.isPresent()) {
 			orderResponseDto.setOrderId(order.get().getOrderId());
 			orderResponseDto.setSelectedCount(order.get().getSelectedCount());
@@ -104,10 +114,10 @@ public class OrderServiceImpl implements OrderService {
 			orderResponseDto.setCreatedAt(order.get().getCreatedAt());
 			orderResponseDto.setUpdatedAt(order.get().getUpdatedAt());
 			orderResponseDto.setProductId(order.get().getProductId());
-		} else {
-			System.out.println("false");
 		}
-		/* LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto); */
+		
+		
+		LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto);
 		
 		return orderResponseDto;
 	}
