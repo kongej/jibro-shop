@@ -3,21 +3,26 @@ package com.jibro.shop.service.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.jibro.shop.data.dto.order.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import com.jibro.shop.data.dto.order.OrderCheckDto;
-import com.jibro.shop.data.dto.order.OrderCreateDto;
-import com.jibro.shop.data.dto.order.OrderResponseDto;
 import com.jibro.shop.data.entity.Order;
 import com.jibro.shop.data.repository.OrderRepository;
 import com.jibro.shop.data.repository.ProductRepository;
 import com.jibro.shop.service.OrderService;
 import com.jibro.shop.utils.OrderIdGenerator;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 /**
  * @author ljy
@@ -80,7 +85,43 @@ public class OrderServiceImpl implements OrderService {
 		LOGGER.info("[createOrder] savedOrder : {}", savedOrder);
 		
 		// api 요청을 풀필먼트 컨트롤러 측에 전달
-		
+		WebClient webClient = WebClient.builder()
+				.baseUrl("http://localhost:9000")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+
+		OrderApiDto orderApiDto = new OrderApiDto();
+		orderApiDto.setOrderId(savedOrder.getOrderId());
+		orderApiDto.setSelectedCount(savedOrder.getSelectedCount());
+		orderApiDto.setOrdererName(savedOrder.getOrdererName());
+		orderApiDto.setPhoneNumber(savedOrder.getPhoneNumber());
+		orderApiDto.setAddress(savedOrder.getAddress());
+		orderApiDto.setStatus(savedOrder.getStatus());
+		orderApiDto.setCreatedAt(savedOrder.getCreatedAt());
+		orderApiDto.setProductId(savedOrder.getProductId());
+		orderApiDto.setSeller("SA001");
+
+		LOGGER.info("[orderApiDto] set orderApiDto : {}", orderApiDto);
+
+		webClient.post().uri(uriBuilder -> uriBuilder.path("/order/receive-from-seller")
+						.build())
+				.bodyValue(orderApiDto)
+				.exchangeToMono(clientResponse -> {
+					if(clientResponse.statusCode().is2xxSuccessful()){
+						System.out.println("데이터 전송 성공");
+						LOGGER.info("[SendApi] statuesCode2xx mono.just : {}", Mono.just("success"));
+						savedOrder.setSendOrder(1);
+						return Mono.defer(()-> {
+							orderRepository.save(savedOrder);
+							return Mono.just("success");
+						});
+					}else {
+						System.out.println("데이터 전송 실패");
+						LOGGER.info("[SendApi] Api fail mono.just : {}", Mono.just("fail"));
+						return Mono.just("fail");
+					}
+				})
+				.block();
 		
 		
 		return savedOrder.getOrderId();
@@ -90,12 +131,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderResponseDto getOrder(OrderCheckDto orderCheckDto) {
 		LOGGER.info("[getOrder] input orderCheckDto : {}", orderCheckDto);
-		
+
 		// 쿼리문으로 조건에 맞는 order 조회(주문번호 AND 구매자 성명 AND 비밀번호)
 		Optional<Order> order = this.orderRepository.findByOrderIdAndOrdererNameAndOrderPassword(orderCheckDto.getOrderId(), orderCheckDto.getOrdererName(), orderCheckDto.getOrderPassword());
 		LOGGER.info("[getOrder] find order : {}", order);
-		
-		
+
 		// 프레젠테이션 영역으로 넘겨줄 dto 객체 생성
 		OrderResponseDto orderResponseDto = new OrderResponseDto();
 		
@@ -118,9 +158,37 @@ public class OrderServiceImpl implements OrderService {
 		
 		
 		LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto);
-		
+
+
 		return orderResponseDto;
 	}
 
+
+//	// api 배송정보 업데이트
+//	@Override
+//	public OrderResponseDto updateDelivery(OrderResponseApiDto orderResponseApiDto) {
+//		Optional<Order> responseOrder = this.orderRepository.findByOrderId(orderResponseApiDto.getOrderId());
+//		// 객체 생성
+//		OrderResponseDto orderResponseDto = new OrderResponseDto();
+//
+//		if (responseOrder.isPresent()) {
+//			orderResponseDto.setOrderId(responseOrder.get().getOrderId());
+//			orderResponseDto.setSelectedCount(responseOrder.get().getSelectedCount());
+//			orderResponseDto.setTotalCost(responseOrder.get().getTotalCost());
+//			orderResponseDto.setOrdererName(responseOrder.get().getOrdererName());
+//			orderResponseDto.setOrderPassword(responseOrder.get().getOrderPassword());
+//			orderResponseDto.setPhoneNumber(responseOrder.get().getPhoneNumber());
+//			orderResponseDto.setAddress(responseOrder.get().getAddress());
+//			orderResponseDto.setStatus(orderResponseApiDto.getStatus());
+//			orderResponseDto.setInvc(orderResponseApiDto.getInvc());
+//			orderResponseDto.setCreatedAt(responseOrder.get().getCreatedAt());
+//			orderResponseDto.setProductId(responseOrder.get().getProductId());
+//			this.orderRepository.save(orderResponseDto);
+//		}
+//
+//		LOGGER.info("[getOrder] set responseOrder : {}", orderResponseDto);
+//
+//		return null;
+//	}
 
 }
