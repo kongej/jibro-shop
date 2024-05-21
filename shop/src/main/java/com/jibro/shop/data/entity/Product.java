@@ -33,7 +33,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Builder
 @Table(name = "seller_product")
-public class Product {
+public class Product extends BaseEntity {
 
 	/* 제품코드(pk) */
 	@Id
