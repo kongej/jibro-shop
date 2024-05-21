@@ -32,8 +32,8 @@ import lombok.ToString;
 @ToString(exclude = "orderList")
 @EqualsAndHashCode
 @Builder
-@Table(name = "product")
-public class Product {
+@Table(name = "seller_product")
+public class Product extends BaseEntity {
 
 	/* 제품코드(pk) */
 	@Id

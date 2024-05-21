@@ -60,6 +60,11 @@ public class Order extends BaseEntity {
 	@Column(name = "address", nullable = false, length = 255)
 	private String address;
 	
+	/* 풀필먼트 측에 넘겼는지 안넘겼는지 여부 */
+	@Column(name = "send_order", nullable = false)
+	@Builder.Default
+	private Integer sendOrder = 0;
+	
 	/* 현 상태 */
 	@Column(name = "status", nullable = false)
 	@Builder.Default
