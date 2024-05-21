@@ -11,7 +11,7 @@ import com.jibro.shop.data.dto.product.ProductResponseDto;
  * **/
 public interface ProductService {
 	
-	/* 제품 상세 정보 제공 */
+	/* 제품코드로 제품 상세 정보 제공 */
 	ProductResponseDto getProduct(String productId);
 
 	/* 주문 등록 페이지에 필요한 정보 제공 */
