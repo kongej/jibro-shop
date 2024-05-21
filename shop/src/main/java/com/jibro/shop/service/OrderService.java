@@ -5,6 +5,8 @@ import com.jibro.shop.data.dto.order.OrderCreateDto;
 import com.jibro.shop.data.dto.order.OrderResponseApiDto;
 import com.jibro.shop.data.dto.order.OrderResponseDto;
 
+import java.util.List;
+
 /**
  * @author ljy
  * @since 2024.05.20
@@ -18,6 +20,8 @@ public interface OrderService {
 	/* 주문 조회 */
 	OrderResponseDto getOrder(OrderCheckDto orderCheckDto);
 
+
 	/* 배송정보 업데이트*/
 //	OrderResponseDto updateDelivery(OrderResponseApiDto orderResponseApiDto);
+
 }
