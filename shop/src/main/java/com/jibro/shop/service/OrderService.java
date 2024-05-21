@@ -2,10 +2,8 @@ package com.jibro.shop.service;
 
 import com.jibro.shop.data.dto.order.OrderCheckDto;
 import com.jibro.shop.data.dto.order.OrderCreateDto;
-import com.jibro.shop.data.dto.order.OrderResponseApiDto;
+import com.jibro.shop.data.dto.order.OrderStatusApiDto;
 import com.jibro.shop.data.dto.order.OrderResponseDto;
-
-import java.util.List;
 
 /**
  * @author ljy
@@ -20,8 +18,7 @@ public interface OrderService {
 	/* 주문 조회 */
 	OrderResponseDto getOrder(OrderCheckDto orderCheckDto);
 
-
 	/* 배송정보 업데이트*/
-//	OrderResponseDto updateDelivery(OrderResponseApiDto orderResponseApiDto);
+	OrderResponseDto updateDelivery(OrderStatusApiDto orderResponseApiDto);
 
 }

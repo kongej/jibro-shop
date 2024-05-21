@@ -3,6 +3,7 @@ package com.jibro.shop.service;
 import com.jibro.shop.data.dto.order.OrderMakeDto;
 import com.jibro.shop.data.dto.product.ProductOrderDto;
 import com.jibro.shop.data.dto.product.ProductResponseDto;
+import com.jibro.shop.data.dto.product.ProductStockDto;
 
 /**
  * @author ljy
@@ -16,4 +17,7 @@ public interface ProductService {
 
 	/* 주문 등록 페이지에 필요한 정보 제공 */
 	ProductOrderDto makeOrder(OrderMakeDto orderMakeDto);
+
+	/* 수량 정보 업데이트 */
+	ProductResponseDto updateStock(ProductStockDto productStockDto);
 }

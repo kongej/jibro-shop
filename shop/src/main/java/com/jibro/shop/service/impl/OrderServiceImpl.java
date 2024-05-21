@@ -3,10 +3,7 @@ package com.jibro.shop.service.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.jibro.shop.data.dto.order.*;
 import org.slf4j.Logger;
@@ -23,6 +20,8 @@ import com.jibro.shop.service.OrderService;
 import com.jibro.shop.utils.OrderIdGenerator;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import javax.persistence.EntityNotFoundException;
 
 /**
  * @author ljy
@@ -98,6 +97,7 @@ public class OrderServiceImpl implements OrderService {
 		orderApiDto.setAddress(savedOrder.getAddress());
 		orderApiDto.setStatus(savedOrder.getStatus());
 		orderApiDto.setCreatedAt(savedOrder.getCreatedAt());
+		orderApiDto.setUpdatedAt(savedOrder.getUpdatedAt());
 		orderApiDto.setProductId(savedOrder.getProductId());
 		orderApiDto.setSeller("SA001");
 
@@ -164,31 +164,37 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 
-//	// api 배송정보 업데이트
-//	@Override
-//	public OrderResponseDto updateDelivery(OrderResponseApiDto orderResponseApiDto) {
-//		Optional<Order> responseOrder = this.orderRepository.findByOrderId(orderResponseApiDto.getOrderId());
-//		// 객체 생성
-//		OrderResponseDto orderResponseDto = new OrderResponseDto();
-//
-//		if (responseOrder.isPresent()) {
-//			orderResponseDto.setOrderId(responseOrder.get().getOrderId());
-//			orderResponseDto.setSelectedCount(responseOrder.get().getSelectedCount());
-//			orderResponseDto.setTotalCost(responseOrder.get().getTotalCost());
-//			orderResponseDto.setOrdererName(responseOrder.get().getOrdererName());
-//			orderResponseDto.setOrderPassword(responseOrder.get().getOrderPassword());
-//			orderResponseDto.setPhoneNumber(responseOrder.get().getPhoneNumber());
-//			orderResponseDto.setAddress(responseOrder.get().getAddress());
-//			orderResponseDto.setStatus(orderResponseApiDto.getStatus());
-//			orderResponseDto.setInvc(orderResponseApiDto.getInvc());
-//			orderResponseDto.setCreatedAt(responseOrder.get().getCreatedAt());
-//			orderResponseDto.setProductId(responseOrder.get().getProductId());
-//			this.orderRepository.save(orderResponseDto);
-//		}
-//
-//		LOGGER.info("[getOrder] set responseOrder : {}", orderResponseDto);
-//
-//		return null;
-//	}
+	// api 배송정보 업데이트
+	@Override
+	public OrderResponseDto updateDelivery(OrderStatusApiDto orderResponseApiDto) {
+		Order responseOrder = this.orderRepository.findByOrderId(orderResponseApiDto.getOrderId())
+				.orElseThrow(() -> new EntityNotFoundException("Order not found with id : " + orderResponseApiDto.getOrderId()));
+
+
+		// 송장 및 배송상태 setting
+		responseOrder.setStatus(orderResponseApiDto.getStatus());
+		responseOrder.setInvc(orderResponseApiDto.getInvc());
+
+		Order updateOrder = orderRepository.save(responseOrder);
+
+		OrderResponseDto orderResponseDto = new OrderResponseDto();
+		orderResponseDto.setOrderId(updateOrder.getOrderId());
+		orderResponseDto.setSelectedCount(updateOrder.getSelectedCount());
+		orderResponseDto.setTotalCost(updateOrder.getTotalCost());
+		orderResponseDto.setOrdererName(updateOrder.getOrdererName());
+		orderResponseDto.setOrderPassword(updateOrder.getOrderPassword());
+		orderResponseDto.setPhoneNumber(updateOrder.getPhoneNumber());
+		orderResponseDto.setAddress(updateOrder.getAddress());
+		orderResponseDto.setStatus(updateOrder.getStatus());
+		orderResponseDto.setInvc(updateOrder.getInvc());
+		orderResponseDto.setCreatedAt(updateOrder.getCreatedAt());
+		orderResponseDto.setUpdatedAt(updateOrder.getUpdatedAt());
+		orderResponseDto.setProductId(updateOrder.getProductId());
+
+		System.out.println(orderResponseApiDto.getInvc());
+		LOGGER.info("[updateDelivery] set responseOrder : {}", responseOrder);
+
+		return orderResponseDto;
+	}
 
 }

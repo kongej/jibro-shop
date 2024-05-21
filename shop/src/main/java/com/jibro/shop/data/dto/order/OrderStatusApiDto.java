@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderResponseApiDto {
+public class OrderStatusApiDto {
     /* 주문코드(pk) */
     private String orderId;
 
