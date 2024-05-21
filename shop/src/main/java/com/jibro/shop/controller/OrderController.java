@@ -2,6 +2,7 @@ package com.jibro.shop.controller;
 
 import java.util.NoSuchElementException;
 
+import com.jibro.shop.data.dto.order.OrderResponseApiDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jibro.shop.data.dto.order.OrderCheckDto;
@@ -67,7 +69,7 @@ public class OrderController {
 		 * .collect(Collectors.joining("\n")); return this.checkException(errorMessage,
 		 * String.format("/order/check", orderCheckDto.getOrderId())); }
 		 */
-		
+
 		OrderResponseDto orderResponseDto = this.orderService.getOrder(orderCheckDto);
 		mav.addObject("orderResponseDto", orderResponseDto);
 		mav.setViewName("order/detail");
