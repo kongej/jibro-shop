@@ -32,7 +32,7 @@ import lombok.ToString;
 @ToString(exclude = "orderList")
 @EqualsAndHashCode
 @Builder
-@Table(name = "product")
+@Table(name = "seller_product")
 public class Product {
 
 	/* 제품코드(pk) */
