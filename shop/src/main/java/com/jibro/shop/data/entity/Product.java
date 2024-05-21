@@ -58,7 +58,7 @@ public class Product extends BaseEntity {
 	private String img;
 	
 	/* order 엔티티와 OneToMany 매핑 */
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private List<Order> orderList = new ArrayList<>();
 }

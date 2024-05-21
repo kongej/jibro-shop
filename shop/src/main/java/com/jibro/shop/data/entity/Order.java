@@ -75,7 +75,7 @@ public class Order extends BaseEntity {
 	private Integer invc;
 	
 	/* product 외래키 지정(ManyToOne) */
-    @ManyToOne(targetEntity = Product.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
     
