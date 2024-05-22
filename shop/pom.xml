@@ -35,6 +35,13 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Spring Security dependency -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-security</artifactId>
+	    </dependency>
+
+
 		<!-- mariadb-java-client setting -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>

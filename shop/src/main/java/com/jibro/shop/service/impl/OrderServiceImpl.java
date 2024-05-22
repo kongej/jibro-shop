@@ -3,17 +3,25 @@ package com.jibro.shop.service.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.jibro.shop.data.dto.order.*;
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.jibro.shop.data.dto.order.OrderApiDto;
+import com.jibro.shop.data.dto.order.OrderCheckDto;
+import com.jibro.shop.data.dto.order.OrderCreateDto;
+import com.jibro.shop.data.dto.order.OrderResponseDto;
+import com.jibro.shop.data.dto.order.OrderStatusApiDto;
 import com.jibro.shop.data.entity.Order;
 import com.jibro.shop.data.repository.OrderRepository;
 import com.jibro.shop.data.repository.ProductRepository;
@@ -21,8 +29,6 @@ import com.jibro.shop.service.OrderService;
 import com.jibro.shop.utils.OrderIdGenerator;
 
 import reactor.core.publisher.Mono;
-
-import javax.persistence.EntityNotFoundException;
 
 /**
  * @author ljy
@@ -35,14 +41,14 @@ public class OrderServiceImpl implements OrderService {
 	// 로그 설정
 	private final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 	// 필요 레포지토리 연결
-	private final ProductRepository productRepository;
 	private final OrderRepository orderRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	// 의존성 주입(di)
 	@Autowired // => 없어도 되는지?
-	public OrderServiceImpl(ProductRepository productRepository, OrderRepository orderRepository) {
-		this.productRepository = productRepository;
+	public OrderServiceImpl(OrderRepository orderRepository, PasswordEncoder passwordEncoder) {
 		this.orderRepository = orderRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	// 주문 신규 생성
@@ -66,15 +72,16 @@ public class OrderServiceImpl implements OrderService {
 		String newOrderId = OrderIdGenerator.generateOrderCode(countBeforeOrders + 1);
 		LOGGER.info("[createOrder] make new order ID : {}", newOrderId);
 		
-		// product 객체 불러옴
-		
+		// 비밀번호 해시 처리
+		String encodedPassword = passwordEncoder.encode(orderCreateDto.getOrderPassword());
+		  
 		// order 엔티티 객체 생성
 		Order order = Order.builder()
 				.orderId(newOrderId)
 				.selectedCount(orderCreateDto.getSelectedCount())
 				.totalCost(orderCreateDto.getTotalCost())
 				.ordererName(orderCreateDto.getOrdererName())
-				.orderPassword(orderCreateDto.getOrderPassword())
+				.orderPassword(encodedPassword)
 				.phoneNumber(orderCreateDto.getPhoneNumber())
 				.address(orderCreateDto.getAddress())
 				.productId(orderCreateDto.getProductId())
@@ -103,79 +110,75 @@ public class OrderServiceImpl implements OrderService {
 		orderApiDto.setSeller("SA001");
 
 		LOGGER.info("[orderApiDto] set orderApiDto : {}", orderApiDto);
-
-		webClient.post().uri(uriBuilder -> uriBuilder.path("/order/receive-from-seller")
-						.build())
-				.bodyValue(orderApiDto)
-				.exchangeToMono(clientResponse -> {
-					if(clientResponse.statusCode().is2xxSuccessful()){
-						System.out.println("데이터 전송 성공");
-						LOGGER.info("[SendApi] statuesCode2xx mono.just : {}", Mono.just("success"));
-						savedOrder.setSendOrder(1);
-						return Mono.defer(()-> {
-							orderRepository.save(savedOrder);
-							return Mono.just("success");
-						});
-					}else {
-						System.out.println("데이터 전송 실패");
-						LOGGER.info("[SendApi] Api fail mono.just : {}", Mono.just("fail"));
-						return Mono.just("fail");
-					}
-				})
-				.block();
-		
+		/*
+		 * webClient.post().uri(uriBuilder ->
+		 * uriBuilder.path("/order/receive-from-seller") .build())
+		 * .bodyValue(orderApiDto) .exchangeToMono(clientResponse -> {
+		 * if(clientResponse.statusCode().is2xxSuccessful()){
+		 * System.out.println("데이터 전송 성공");
+		 * LOGGER.info("[SendApi] statuesCode2xx mono.just : {}", Mono.just("success"));
+		 * savedOrder.setSendOrder(1); return Mono.defer(()-> {
+		 * orderRepository.save(savedOrder); return Mono.just("success"); }); }else {
+		 * System.out.println("데이터 전송 실패");
+		 * LOGGER.info("[SendApi] Api fail mono.just : {}", Mono.just("fail")); return
+		 * Mono.just("fail"); } }) .block();
+		 */
 		
 		return savedOrder.getOrderId();
 	}
 
 	// 주문 상세 정보 조회
 	@Override
-	public OrderResponseDto getOrder(OrderCheckDto orderCheckDto) {
+	public OrderResponseDto getOrder(OrderCheckDto orderCheckDto) throws NoSuchElementException {
 		LOGGER.info("[getOrder] input orderCheckDto : {}", orderCheckDto);
 
 		// 쿼리문으로 조건에 맞는 order 조회(주문번호 AND 구매자 성명 AND 비밀번호)
-		Optional<Order> order = this.orderRepository.findByOrderIdAndOrdererNameAndOrderPassword(orderCheckDto.getOrderId(), orderCheckDto.getOrdererName(), orderCheckDto.getOrderPassword());
+	    Optional<Order> optionalOrder = this.orderRepository.findByOrderIdAndOrdererName(
+	            orderCheckDto.getOrderId(), orderCheckDto.getOrdererName());
+
+	    Order order = optionalOrder.orElseThrow(() -> new NoSuchElementException("Order not found"));
 		LOGGER.info("[getOrder] find order : {}", order);
-
-		// 프레젠테이션 영역으로 넘겨줄 dto 객체 생성
-		OrderResponseDto orderResponseDto = new OrderResponseDto();
 		
-		// order 정보 값 존재 시, 해당 dto에 값 담아줌
-		/*TODO 만약 시간 있을 시, order 정보 없을 시 추가 대응 가능하도록 조치할 것 */
-		if (order.isPresent()) {
-			orderResponseDto.setOrderId(order.get().getOrderId());
-			orderResponseDto.setSelectedCount(order.get().getSelectedCount());
-			orderResponseDto.setTotalCost(order.get().getTotalCost());
-			orderResponseDto.setOrdererName(order.get().getOrdererName());
-			orderResponseDto.setOrderPassword(order.get().getOrderPassword());
-			orderResponseDto.setPhoneNumber(order.get().getPhoneNumber());
-			orderResponseDto.setAddress(order.get().getAddress());
-			orderResponseDto.setStatus(order.get().getStatus());
-			orderResponseDto.setInvc(order.get().getInvc() != null ? order.get().getInvc() : 0);
-			orderResponseDto.setCreatedAt(order.get().getCreatedAt());
-			orderResponseDto.setUpdatedAt(order.get().getUpdatedAt());
-			orderResponseDto.setProductId(order.get().getProductId());
-		}
-		
-		
-		LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto);
+		// 비밀번호 passwordEncoder로 2차 검증
+		 if (passwordEncoder.matches(orderCheckDto.getOrderPassword(), order.getOrderPassword())) {
+			// 프레젠테이션 영역으로 넘겨줄 dto 객체 생성
+			OrderResponseDto orderResponseDto = new OrderResponseDto();
+			
+			// order 정보 값 존재 시, 해당 dto에 값 담아줌
+			/*TODO 만약 시간 있을 시, order 정보 없을 시 추가 대응 가능하도록 조치할 것 */
+			orderResponseDto.setOrderId(order.getOrderId());
+			orderResponseDto.setSelectedCount(order.getSelectedCount());
+			orderResponseDto.setTotalCost(order.getTotalCost());
+			orderResponseDto.setOrdererName(order.getOrdererName());
+			orderResponseDto.setPhoneNumber(order.getPhoneNumber());
+			orderResponseDto.setAddress(order.getAddress());
+			orderResponseDto.setStatus(order.getStatus());
+			orderResponseDto.setInvc(order.getInvc() != null ? order.getInvc() : 0);
+			orderResponseDto.setCreatedAt(order.getCreatedAt());
+			orderResponseDto.setUpdatedAt(order.getUpdatedAt());
+			orderResponseDto.setProduct(order.getProduct());
+			
+			LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto);
 
-
-		return orderResponseDto;
+			return orderResponseDto;
+		 } else {
+	           throw new NoSuchElementException("Invalid password");
+	      }
 	}
 
 
 	// api 배송정보 업데이트
 	@Override
-	public OrderResponseDto updateDelivery(OrderStatusApiDto orderResponseApiDto) {
-		Order responseOrder = this.orderRepository.findByOrderId(orderResponseApiDto.getOrderId())
-				.orElseThrow(() -> new EntityNotFoundException("Order not found with id : " + orderResponseApiDto.getOrderId()));
+	public OrderResponseDto updateDelivery(OrderStatusApiDto orderResponseApiDto) throws NoSuchElementException {
+		Order responseOrder = this.orderRepository.findById(orderResponseApiDto.getOrderId())
+				.orElseThrow(() -> new NoSuchElementException("Order not found with id : " + orderResponseApiDto.getOrderId()));
 
 
 		// 송장 및 배송상태 setting
 		responseOrder.setStatus(orderResponseApiDto.getStatus());
 		responseOrder.setInvc(orderResponseApiDto.getInvc());
 
+		// 변경 값 업데이트
 		Order updateOrder = orderRepository.save(responseOrder);
 
 		OrderResponseDto orderResponseDto = new OrderResponseDto();
@@ -183,7 +186,6 @@ public class OrderServiceImpl implements OrderService {
 		orderResponseDto.setSelectedCount(updateOrder.getSelectedCount());
 		orderResponseDto.setTotalCost(updateOrder.getTotalCost());
 		orderResponseDto.setOrdererName(updateOrder.getOrdererName());
-		orderResponseDto.setOrderPassword(updateOrder.getOrderPassword());
 		orderResponseDto.setPhoneNumber(updateOrder.getPhoneNumber());
 		orderResponseDto.setAddress(updateOrder.getAddress());
 		orderResponseDto.setStatus(updateOrder.getStatus());
