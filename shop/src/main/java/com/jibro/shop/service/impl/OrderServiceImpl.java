@@ -157,6 +157,7 @@ public class OrderServiceImpl implements OrderService {
 			orderResponseDto.setCreatedAt(order.getCreatedAt());
 			orderResponseDto.setUpdatedAt(order.getUpdatedAt());
 			orderResponseDto.setProduct(order.getProduct());
+			orderResponseDto.setProductId(order.getProductId());
 			
 			LOGGER.info("[getOrder] set orderResponseDto : {}", orderResponseDto);
 
@@ -192,6 +193,7 @@ public class OrderServiceImpl implements OrderService {
 		orderResponseDto.setInvc(updateOrder.getInvc());
 		orderResponseDto.setCreatedAt(updateOrder.getCreatedAt());
 		orderResponseDto.setUpdatedAt(updateOrder.getUpdatedAt());
+		orderResponseDto.setProduct(updateOrder.getProduct());
 		orderResponseDto.setProductId(updateOrder.getProductId());
 
 		System.out.println(orderResponseApiDto.getInvc());
