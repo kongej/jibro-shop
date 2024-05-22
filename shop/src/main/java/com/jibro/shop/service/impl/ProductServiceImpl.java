@@ -2,6 +2,7 @@ package com.jibro.shop.service.impl;
 
 import java.util.Optional;
 
+import com.jibro.shop.data.dto.product.ProductStockDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import com.jibro.shop.data.entity.Product;
 import com.jibro.shop.data.repository.OrderRepository;
 import com.jibro.shop.data.repository.ProductRepository;
 import com.jibro.shop.service.ProductService;
+
+import javax.persistence.EntityNotFoundException;
 
 /**
  * @author ljy
@@ -77,6 +80,30 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		return productOrderDto;
+	}
+
+	// 풀필먼트에서 수량 정보 업데이트
+	@Override
+	public ProductResponseDto updateStock(ProductStockDto productStockDto) {
+		Product responseProduct = this.productRepository.findByProductId(productStockDto.getProductId())
+				.orElseThrow(()-> new EntityNotFoundException("Product not found with id" + productStockDto.getProductId()));
+
+		// 수량 setting
+		responseProduct.setProductCount(productStockDto.getProductCount());
+
+		Product updateProduct = this.productRepository.save(responseProduct);
+
+		ProductResponseDto productResponseDto = new ProductResponseDto();
+		productResponseDto.setProductId(updateProduct.getProductId());
+		productResponseDto.setProduct(updateProduct.getProduct());
+		productResponseDto.setProductCount(updateProduct.getProductCount());
+		productResponseDto.setCost(updateProduct.getCost());
+		productResponseDto.setImg(updateProduct.getImg());
+
+		System.out.println(updateProduct.toString());
+		LOGGER.info("[get Stock] set updateProduct : {}", updateProduct);
+
+		return productResponseDto;
 	}
 
 }
