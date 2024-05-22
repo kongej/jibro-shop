@@ -29,7 +29,7 @@ import com.jibro.shop.service.OrderService;
 public class OrderController {
 	
 	// 로그 설정
-	private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 	
 	// 의존성 주입(OrderService)
 	@Autowired
