@@ -9,7 +9,7 @@
 	<p><label>판매가</label> : <span th:text="${productResponseDto.cost}"></span></p>
 	
 	<form method="POST" th:action="@{/order/make}" th:object="${orderMakeDto}">
-		<input type="hidden" name="productId" value="24L001" />
+		<input type="hidden" name="productId" th:value="${productResponseDto.productId}" />
 		<input type="number" name="selectedCount" value="1" min="1" required />
 		<input type="submit" value="주문" />
 	</form>

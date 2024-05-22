@@ -26,7 +26,7 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class ProductServiceImpl implements ProductService {
 	// 로그 설정
-	private final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 	// 필요 레포지토리 연결
 	private final ProductRepository productRepository;
 	
