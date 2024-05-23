@@ -73,18 +73,18 @@ public class OrderServiceImpl implements OrderService {
 		LOGGER.info("[createOrder] make new order ID : {}", newOrderId);
 		
 		// 비밀번호 해시 처리
-		String encodedPassword = passwordEncoder.encode(orderCreateDto.getOrderPassword());
+		String encodedPassword = passwordEncoder.encode(orderCreateDto.getOrderPassword().trim());
 		  
 		// order 엔티티 객체 생성
 		Order order = Order.builder()
 				.orderId(newOrderId)
 				.selectedCount(orderCreateDto.getSelectedCount())
 				.totalCost(orderCreateDto.getTotalCost())
-				.ordererName(orderCreateDto.getOrdererName())
+				.ordererName(orderCreateDto.getOrdererName().trim())
 				.orderPassword(encodedPassword)
 				.phoneNumber(orderCreateDto.getPhoneNumber().replaceAll("-", "").trim())
-				.address(orderCreateDto.getAddress())
-				.productId(orderCreateDto.getProductId())
+				.address(orderCreateDto.getAddress().trim())
+				.productId(orderCreateDto.getProductId().trim())
 				.build();
 		
 		// 주문 정보 db에 저장
@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
 
 		// 쿼리문으로 조건에 맞는 order 조회(주문번호 AND 구매자 성명 AND 비밀번호)
 	    Optional<Order> optionalOrder = this.orderRepository.findByOrderIdAndOrdererName(
-	            orderCheckDto.getOrderId(), orderCheckDto.getOrdererName());
+	            orderCheckDto.getOrderId().trim(), orderCheckDto.getOrdererName().trim());
 
 	    Order order = optionalOrder.orElseThrow(() -> new NoSuchElementException("Order not found"));
 		LOGGER.info("[getOrder] find order : {}", order);
