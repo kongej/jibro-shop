@@ -23,7 +23,7 @@
 			<p><label>구매자명</label> <span th:text="${orderResponseDto.ordererName}" class="form-control"></span></p>
 		</div>
 		<div class="mb-3">
-			<p><label>연락처</label> <span th:text="${orderResponseDto.phoneNumber}" class="form-control"></span></p>
+			<p><label>연락처</label> <span id="formattedPhone" th:text="${orderResponseDto.phoneNumber}" class="form-control"></span></p>
 		</div>
 		<div class="mb-3">
 			<p><label>주소</label>  <span th:text="${orderResponseDto.address}" class="form-control"></span></p>
@@ -47,4 +47,19 @@
 	       </div>
               </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+            const phoneElement = document.getElementById('formattedPhone');
+            const phoneNumber = phoneElement.textContent.trim(); // 타임리프를 통해 설정된 값을 가져옴
+            const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+            phoneElement.textContent = formattedPhoneNumber; // 포맷된 번호를 다시 설정
+        });
+
+        function formatPhoneNumber(number) {
+            if (number.length === 11) {
+                return number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            }
+            return number; // 길이가 11이 아닌 경우 원래 문자열을 반환
+        }
+</script>
 </html>

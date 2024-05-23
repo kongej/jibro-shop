@@ -1,0 +1,64 @@
+body, html {
+    height: 100%;
+     font-family: Arial, sans-serif;
+ }
+
+.full-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+        
+.header {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+/*     height: 14%; */
+    width: 100%;
+    color: white;
+}
+
+.header h1,
+.header h2,
+.header h3,
+.header h4,
+.header h5,
+.header h6,
+.header b {
+    color: white;
+}
+
+nav {
+	height: 100%;
+	width: 100%;
+	background-color: #283B40;
+	display: flex;
+	justify-content: center;
+}
+
+.content {
+	display: flex;
+	justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    flex-grow: 1;
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+.footer .contact-info, .footer .address {
+    margin: 10px 0;
+}
+.footer a {
+    color: #ddd;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}

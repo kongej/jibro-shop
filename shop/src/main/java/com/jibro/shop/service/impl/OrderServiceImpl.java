@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 				.totalCost(orderCreateDto.getTotalCost())
 				.ordererName(orderCreateDto.getOrdererName())
 				.orderPassword(encodedPassword)
-				.phoneNumber(orderCreateDto.getPhoneNumber().replaceAll("-", ""))
+				.phoneNumber(orderCreateDto.getPhoneNumber().replaceAll("-", "").trim())
 				.address(orderCreateDto.getAddress())
 				.productId(orderCreateDto.getProductId())
 				.build();
