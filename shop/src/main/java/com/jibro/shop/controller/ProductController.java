@@ -69,7 +69,7 @@ public class ProductController {
 	// 해당 상품 번호가 없을 시 or 입력 값 틀렸을 시
 	@ExceptionHandler(NoSuchElementException.class)
 	public ModelAndView noSuchElementExceptionHandler(NoSuchElementException ex) {
-		return this.checkException("일치하는 상품 정보가 없습니다.", "/product/P001");
+		return this.checkException("일치하는 상품 정보가 없습니다.", "/product/24P001");
 	}
 	
 }

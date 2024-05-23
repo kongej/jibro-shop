@@ -47,7 +47,7 @@
 							<form method="POST" th:action="@{/order/make}" th:object="${orderMakeDto}">
 								<input type="hidden" name="productId" th:value="${productResponseDto.productId}" />
 								<h4>상품 개수</h4>
-								<input id="selectedCount" type="number" name="selectedCount" value="1" min="1" class="form-control" required />
+								<input id="selectedCount" type="number" name="selectedCount" value="1" min="1" th:max="${productResponseDto.productCount}" class="form-control" required />
 								<div class="my-4">
 									<h4>총 가격</h4> 
 									<div class="row justify-content-end align-items-center mx-3">
@@ -57,7 +57,7 @@
 								<div class="button_div my-4">
 									<button id="submit_btn" type="submit" class="btn"><span class="material-symbols-outlined">
 										shopping_cart_checkout
-									</span>   주문</button>
+									</span>&nbsp;주문</button>
 								</div>
 							</form>
 				       	</div>
@@ -81,15 +81,16 @@
 	                var total = count * productCost;
 	                totalPrice.textContent = total + " 원";
 	            }
-	
+				
+				
 	            // 초기 총 가격 설정
 	            updateTotalPrice();
 	
 	            // 입력 값 변경 시 총 가격 업데이트
 	            selectedCount.addEventListener("input", updateTotalPrice);
+	            
 	        });
 	</script>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 </html>
