@@ -32,14 +32,12 @@
 								<h4>선택 수량</h4> 
 								<div class="text-end mx-3">
 									<b th:text="${productOrderDto.selectedCount}"></b> <b>개</b>
-									<input type="hidden" name="selectedCount" th:value="${productOrderDto.selectedCount}" min="1" class="form-control" required />
 								</div>
 							</div>
 							<div class="my-4">
 								<h4>총 가격</h4> 
 								<div class="text-end mx-3">
-									<b id="totalPrice" class="col-md-auto" th:text="${productOrderDto.cost * productOrderDto.selectedCount}" style="color:red;"></b> <b style="color:red;">원</b>
-									<input type="hidden" name="totalCost" th:value="${productOrderDto.cost * productOrderDto.selectedCount}" class="form-control" required />
+									<b id="totalPrice" class="col-md-auto" th:text="${productOrderDto.cost * productOrderDto.selectedCount}" style="color:red;"></b> <b style="color:red;">원</b>	
 								</div>
 							</div>
 				       	</div>
@@ -48,32 +46,39 @@
 				<div class="col-md-auto">
 					<div class="card">
 					    <div class="card-body m-4">
+					   		<h3>주문하기</h3>
+					    	<hr>
 							<form method="POST" th:action="@{/order/create}" th:object="${orderCreateDto}">
 								<div class="my-4">
-									<h4>구매자 성명</h4>
+									<h5>구매자 성명</h5>
 									<input type="text" name="ordererName" class="form-control" required />
 								</div>
 								<div class="my-4">
-									<h4>주문 조회용 비밀번호</h4>
+									<h5>주문 조회용 비밀번호</h5>
 									<input type="password" name="orderPassword" class="form-control" required />
 								</div>
 								<div class="my-4">
-									<h4>전화번호</h4>
+									<h5>전화번호</h5>
 									<input id="phoneNumber" type="text" name="phoneNumber" placeholder="000-000-0000" class="form-control" required />
 								</div>
 								<div class="mt-4 mb-5">
-									<h4>주소</h4>
+									<h5>주소</h5>
 									<input type="text" name="address" class="form-control" required />
 								</div>
 								<div class="button_div my-4">
 									<input type="hidden" name="productId" th:value="${productOrderDto.productId}" />
+									<input type="hidden" name="selectedCount" th:value="${productOrderDto.selectedCount}" min="1" class="form-control" required />
+									<input type="hidden" name="totalCost" th:value="${productOrderDto.cost * productOrderDto.selectedCount}" class="form-control" required />
 									<button id="submit_btn" type="submit" class="btn"><span class="material-symbols-outlined">
 										payments
 									</span>&nbsp;구매하기</button>
 								</div>	
 							</form>
 							<div class="button_div my-4">
-									<button id="cancel_btn" onclick="location.href=document.referrer;" class="btn btn-secondary">취소</button>
+									<button id="cancel_btn" onclick="location.href=document.referrer;" class="btn btn-secondary">
+									<span class="material-symbols-outlined">
+										cancel		
+									</span>&nbsp;취소</button>
 							</div>
 				       	</div>
 				  	</div>
