@@ -18,12 +18,12 @@
 				<p><label>판매가</label>  <span th:text="${productOrderDto.cost}" class="form-control"></span></p>
 			</div>
 
-			<form method="POST" th:action="@{/order/create}" th:object="${orderCreateDto}">
+			<form id="orderForm" method="POST" th:action="@{/order/create}" th:object="${orderCreateDto}">
 				<p>수량  <input type="number" name="selectedCount" th:value="${productOrderDto.selectedCount}" min="1" class="form-control" required readonly /> </p>
 				<p>총 가격  <input type="text" name="totalCost" th:value="${productOrderDto.cost * productOrderDto.selectedCount}" class="form-control" required readonly /></p>
 				<p>구매자 성명  <input type="text" name="ordererName" class="form-control" required /></p>
 				<p>주문 조회 비밀번호  <input type="password" name="orderPassword" class="form-control" required /></p>
-				<p>전화번호  <input type="text" name="phoneNumber" placeholder="000-000-0000" class="form-control" required /></p>
+				<p>전화번호  <input type="text" id="phoneNumber" name="phoneNumber" placeholder="000-000-0000" class="form-control" maxlength="13" required /></p>
 				<p>주소  <input type="text" name="address" class="form-control" required /></p>
 				<div class="mb-3">
 					<input type="hidden" name="productId" th:value="${productOrderDto.productId}" />
@@ -35,5 +35,31 @@
 	 	        </div>
 	 	   </div>
 	 	</div>
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('phoneNumber');
+
+    phoneInput.addEventListener('input', function(event) {
+        let input = phoneInput.value.replace(/\D/g, ''); // 숫자가 아닌 문자 제거
+        let formattedInput = '';
+
+        if (input.length <= 3) {
+            formattedInput = input;
+        } else if (input.length <= 7) {
+            formattedInput = `${input.slice(0, 3)}-${input.slice(3)}`;
+        } else {
+            formattedInput = `${input.slice(0, 3)}-${input.slice(3, 7)}-${input.slice(7)}`;
+        }
+
+        phoneInput.value = formattedInput;
+    });
+
+    const orderForm = document.getElementById('orderForm');
+    orderForm.addEventListener('submit', function(event) {
+        // 폼 제출 전에 하이픈 제거
+        phoneInput.value = phoneInput.value.replace(/-/g, '');
+    });
+});
+</script>
 </body>
 </html>
