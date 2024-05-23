@@ -1,7 +1,5 @@
 package com.jibro.shop.data.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jibro.shop.data.entity.Product;
@@ -13,7 +11,6 @@ import com.jibro.shop.data.entity.Product;
  * **/
 public interface ProductRepository extends JpaRepository<Product, String> {
 	
-	/* productId 기반으로 단일 상품 조회 */
-	Optional<Product> findByProductId(String productId);
+
 }
 

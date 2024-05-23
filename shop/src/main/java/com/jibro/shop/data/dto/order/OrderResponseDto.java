@@ -2,7 +2,7 @@ package com.jibro.shop.data.dto.order;
 
 import java.time.LocalDateTime;
 
-import com.jibro.shop.data.dto.product.ProductDto;
+import com.jibro.shop.data.entity.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,9 +34,6 @@ public class OrderResponseDto {
 	/* 구매자명 */
 	private String ordererName;
 	
-	/* 주문 비밀번호 */
-	private String orderPassword;
-	
 	/* 연락처 */
 	private String phoneNumber;
 	
@@ -55,6 +52,9 @@ public class OrderResponseDto {
 	/* 주문 갱신 날짜 */
 	private LocalDateTime updatedAt;
 	
-	/* 관련된 제품 정보 */
+	/* 관련된 제품 아이디 */
     private String productId;
+    
+    /* 제품 객체 */
+    private Product product;
 }

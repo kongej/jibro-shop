@@ -57,7 +57,7 @@ public class OrderController {
 	@PostMapping("/order/check")
 	public ModelAndView getOrder(
 			@Validated OrderCheckDto orderCheckDto,
-			Errors errors) {
+			Errors errors)  throws NoSuchElementException {
 		ModelAndView mav = new ModelAndView();
 		
 		/*
@@ -74,6 +74,7 @@ public class OrderController {
 		return mav;
 	}
 	
+
 	// error 처리
 	private ModelAndView checkException(String message, String location) {
 		ModelAndView mav = new ModelAndView();
@@ -87,6 +88,6 @@ public class OrderController {
 	// 해당 주문번호가 없을 시 or 입력 값 틀렸을 시
 	@ExceptionHandler(NoSuchElementException.class)
 	public ModelAndView noSuchElementExceptionHandler(NoSuchElementException ex) {
-		return this.checkException("일치하는 정보가 없습니다.", "/order/check");
+		return this.checkException("일치하는 주문 정보가 없습니다.\n다시 입력해주세요.", "/order/check");
 	}
 }

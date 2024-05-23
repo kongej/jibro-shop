@@ -1,5 +1,6 @@
 package com.jibro.shop.service.impl;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import com.jibro.shop.data.dto.product.ProductStockDto;
@@ -38,22 +39,21 @@ public class ProductServiceImpl implements ProductService {
 	
 	// 상품 상세 정보 return
 	@Override
-	public ProductResponseDto getProduct(String productId) {
+	public ProductResponseDto getProduct(String productId) throws NoSuchElementException {
 		LOGGER.info("[getProduct] input productId : {}", productId);
-		Optional<Product> product = productRepository.findByProductId(productId);
+		Product product = productRepository.findById(productId)
+				.orElseThrow(() -> new NoSuchElementException("Product not found with id : " + productId));
 		
 		ProductResponseDto productResponseDto = new ProductResponseDto();
 		
 		// 해당 product 존재 시, 해당 값 ProductResponseDto에 넣어서 보내주기
-		if (product.isPresent()) {
-			LOGGER.info("[getProduct] product number : {}, name : {}", product.get().getProductId(),
-		            product.get().getProduct());
-			productResponseDto.setProductId(product.get().getProductId());
-			productResponseDto.setProduct(product.get().getProduct());
-			productResponseDto.setProductCount(product.get().getProductCount());
-			productResponseDto.setImg(product.get().getImg());
-			productResponseDto.setCost(product.get().getCost());
-		}
+		LOGGER.info("[getProduct] product number : {}, name : {}", product.getProductId(),
+	            product.getProduct());
+		productResponseDto.setProductId(product.getProductId());
+		productResponseDto.setProduct(product.getProduct());
+		productResponseDto.setProductCount(product.getProductCount());
+		productResponseDto.setImg(product.getImg());
+		productResponseDto.setCost(product.getCost());
 		
 		return productResponseDto;
 	}
@@ -64,29 +64,28 @@ public class ProductServiceImpl implements ProductService {
 		
 		LOGGER.info("[makeOrder] input orderMakeDto productId : {}, selectedCount : {}", 
 				orderMakeDto.getProductId(), orderMakeDto.getSelectedCount());
-		Optional<Product> product = productRepository.findByProductId(orderMakeDto.getProductId());
+		Product product = productRepository.findById(orderMakeDto.getProductId())
+				.orElseThrow(() -> new NoSuchElementException("Product not found with id : " + orderMakeDto.getProductId()));
 		
 		ProductOrderDto productOrderDto = new ProductOrderDto();
 		productOrderDto.setSelectedCount(orderMakeDto.getSelectedCount());
 		
 		// 해당 product 존재 시, 해당 값 ProductResponseDto에 넣어서 보내주기
-		if (product.isPresent()) {
-			LOGGER.info("[makeOrder] product number : {}, name : {}", product.get().getProductId(),
-		            product.get().getProduct());
-			productOrderDto.setProductId(product.get().getProductId());
-			productOrderDto.setProduct(product.get().getProduct());
-			productOrderDto.setImg(product.get().getImg());
-			productOrderDto.setCost(product.get().getCost());
-		}
+		LOGGER.info("[makeOrder] product number : {}, name : {}", product.getProductId(),
+	            product.getProduct());
+		productOrderDto.setProductId(product.getProductId());
+		productOrderDto.setProduct(product.getProduct());
+		productOrderDto.setImg(product.getImg());
+		productOrderDto.setCost(product.getCost());
 		
 		return productOrderDto;
 	}
 
 	// 풀필먼트에서 수량 정보 업데이트
 	@Override
-	public ProductResponseDto updateStock(ProductStockDto productStockDto) {
-		Product responseProduct = this.productRepository.findByProductId(productStockDto.getProductId())
-				.orElseThrow(()-> new EntityNotFoundException("Product not found with id" + productStockDto.getProductId()));
+	public ProductResponseDto updateStock(ProductStockDto productStockDto) throws NoSuchElementException  {
+		Product responseProduct = this.productRepository.findById(productStockDto.getProductId())
+				.orElseThrow(()-> new NoSuchElementException("Product not found with id" + productStockDto.getProductId()));
 
 		// 수량 setting
 		responseProduct.setProductCount(productStockDto.getProductCount());

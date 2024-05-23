@@ -49,7 +49,7 @@ public class Order extends BaseEntity {
 	private String ordererName;
 	
 	/* 주문 비밀번호 */
-	@Column(name = "order_password", nullable = false, length = 20)
+	@Column(name = "order_password", nullable = false, length = 255)
 	private String orderPassword;
 	
 	/* 전화번호 */

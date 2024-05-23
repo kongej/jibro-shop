@@ -1,9 +1,13 @@
 package com.jibro.shop.controller;
 
+import java.util.NoSuchElementException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +37,7 @@ public class ProductController {
 	// product 상세 화면으로 이동
 	@GetMapping("/product/{productId}")
 	public ModelAndView getProduct(
-			@PathVariable String productId) {
+			@PathVariable String productId) throws NoSuchElementException {
 		ModelAndView mav = new ModelAndView();
 		ProductResponseDto productResponseDto = this.productService.getProduct(productId);
 		mav.addObject("productResponseDto", productResponseDto);
@@ -43,7 +47,7 @@ public class ProductController {
 	
 	// order 신규 등록 화면으로 이동
 	@PostMapping("/order/make")
-	public ModelAndView makeOrder(OrderMakeDto orderMakeDto) {
+	public ModelAndView makeOrder(OrderMakeDto orderMakeDto) throws NoSuchElementException {
 		ModelAndView mav = new ModelAndView();
 		ProductOrderDto productOrderDto = this.productService.makeOrder(orderMakeDto);
 		LOGGER.info("ProductOrderDto: {}", productOrderDto);
@@ -51,4 +55,21 @@ public class ProductController {
 		mav.setViewName("order/create");
 		return mav;
 	}
+	
+	// error 처리
+	private ModelAndView checkException(String message, String location) {
+		ModelAndView mav = new ModelAndView();
+		mav.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
+		mav.addObject("message", message);
+		mav.addObject("location", location);
+		mav.setViewName("common/check");
+		return mav;
+	}
+	
+	// 해당 상품 번호가 없을 시 or 입력 값 틀렸을 시
+	@ExceptionHandler(NoSuchElementException.class)
+	public ModelAndView noSuchElementExceptionHandler(NoSuchElementException ex) {
+		return this.checkException("일치하는 상품 정보가 없습니다.", "/product/24P001");
+	}
+	
 }
