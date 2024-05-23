@@ -46,21 +46,23 @@
 				<div class="col-md-auto">
 					<div class="card">
 					    <div class="card-body m-4">
+					   		<h3>주문하기</h3>
+					    	<hr>
 							<form method="POST" th:action="@{/order/create}" th:object="${orderCreateDto}">
 								<div class="my-4">
-									<h4>구매자 성명</h4>
+									<h5>구매자 성명</h5>
 									<input type="text" name="ordererName" class="form-control" required />
 								</div>
 								<div class="my-4">
-									<h4>주문 조회용 비밀번호</h4>
+									<h5>주문 조회용 비밀번호</h5>
 									<input type="password" name="orderPassword" class="form-control" required />
 								</div>
 								<div class="my-4">
-									<h4>전화번호</h4>
+									<h5>전화번호</h5>
 									<input id="phoneNumber" type="text" name="phoneNumber" placeholder="000-000-0000" class="form-control" required />
 								</div>
 								<div class="mt-4 mb-5">
-									<h4>주소</h4>
+									<h5>주소</h5>
 									<input type="text" name="address" class="form-control" required />
 								</div>
 								<div class="button_div my-4">
