@@ -110,20 +110,19 @@ public class OrderServiceImpl implements OrderService {
 		orderApiDto.setSeller("SA001");
 
 		LOGGER.info("[orderApiDto] set orderApiDto : {}", orderApiDto);
-		/*
-		 * webClient.post().uri(uriBuilder ->
-		 * uriBuilder.path("/order/receive-from-seller") .build())
-		 * .bodyValue(orderApiDto) .exchangeToMono(clientResponse -> {
-		 * if(clientResponse.statusCode().is2xxSuccessful()){
-		 * System.out.println("데이터 전송 성공");
-		 * LOGGER.info("[SendApi] statuesCode2xx mono.just : {}", Mono.just("success"));
-		 * savedOrder.setSendOrder(1); return Mono.defer(()-> {
-		 * orderRepository.save(savedOrder); return Mono.just("success"); }); }else {
-		 * System.out.println("데이터 전송 실패");
-		 * LOGGER.info("[SendApi] Api fail mono.just : {}", Mono.just("fail")); return
-		 * Mono.just("fail"); } }) .block();
-		 */
-		
+
+		 webClient.post().uri(uriBuilder ->
+		 uriBuilder.path("/order/receive-from-seller") .build())
+		 .bodyValue(orderApiDto) .exchangeToMono(clientResponse -> {
+			 if(clientResponse.statusCode().is2xxSuccessful()){
+			 System.out.println("데이터 전송 성공");
+			 LOGGER.info("[SendApi] statuesCode2xx mono.just : {}", Mono.just("success"));
+			 savedOrder.setSendOrder(1); return Mono.defer(()-> {
+			 orderRepository.save(savedOrder); return Mono.just("success"); }); }else {
+			 System.out.println("데이터 전송 실패");
+		 LOGGER.info("[SendApi] Api fail mono.just : {}", Mono.just("fail"));
+		 return Mono.just("fail"); } }) .block();
+
 		return savedOrder.getOrderId();
 	}
 
